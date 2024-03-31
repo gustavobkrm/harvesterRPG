@@ -1,7 +1,19 @@
+using harvesterRPG.Models;
+using harvesterRPG.Repository;
+using harvesterRPG.Repository.Interfaces;
+using harvesterRPG.Services;
+using harvesterRPG.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddTransient<IHomeRepository, HomeRepository>();
+builder.Services.AddTransient<IHomeService, HomeService>();
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+       options.UseSqlServer("Server=GUSTAVO\\SQLEXPRESS;Database=rpgOnePiece;Trusted_Connection=True;TrustServerCertificate=True")); 
+
 
 var app = builder.Build();
 

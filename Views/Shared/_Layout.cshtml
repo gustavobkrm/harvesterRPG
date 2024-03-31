@@ -9,41 +9,115 @@
     <link rel="stylesheet" href="~/harvesterRPG.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">harvesterRPG</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
-        </main>
-    </div>
+        <div class="wrapper">
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - harvesterRPG - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <nav id="sidebar">
+                <div class="sidebar-header">
+                    <h3>Life Hack for RPG Jobs</h3>
+                </div>
+
+                <ul class="list-unstyled components">
+                    <p>Choose your Job</p>
+                    <li class="active">
+                        <a href="#">Harvester</a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- SIDEBAR ACIMA -->
+            <div id="content">
+                <div class="card-header">
+                    <h1> Harvester </h1>
+                </div>
+                <p id="alertError" class="col-4 alert-danger visually-hidden"> Dados inseridos no campo de texto estão inválidos, selecione um tipo de clima e digite os 5 dados</p>
+                <div class="card-body col-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio"  id="tropical" name="listaRadio">
+                        <label class="form-check-label" for="tropical">
+                            Tropical Climate
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="mediterranean" name="listaRadio">
+                        <label class="form-check-label" for="mediterranean">
+                            Mediterranean Climate
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="temperate" name="listaRadio">
+                        <label class="form-check-label" for="temperate">
+                            Temperate Climate (city)
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="special" name="listaRadio">
+                        <label class="form-check-label" for="special">
+                            Special Climate
+                        </label>
+                    </div>
+                </div>
+
+                <div class="card-body col-5">
+                    <div>
+                        <p>Digite os dados rolados (ex: 10 15 11 1 4)</p>
+                        <input class="col-4" type:text id="textDices"/>
+                    </div>
+                    <div class="col-4 d-flex justify-content-end" style="margin-top:10px">
+                        <button class="btn btn-primary" id="saveDices">Check Items</button>
+                    </div>
+                </div>
+
+                <div class="card-body col-4">
+
+                </div>
+
+            </div>
         </div>
-    </footer>
+        </main>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        $('#saveDices').on('click', function () {
+            var dadosString = $('#textDices').val();
+            var numeros = dadosString.split(' ');
+            var checkNumeros = true;
+            numeros.forEach(nro => {
+                var nroInt = parseInt(nro);
+                if (numeros.length != 5 || nroInt > 20 || nroInt < 0) 
+                    checkNumeros = false;
+            });
+
+
+
+            if (!checkNumeros || (!$('input[name="listaRadio"]:checked').length > 0))
+                $('#alertError').removeClass('visually-hidden');
+            else {
+                $('#alertError').addClass('visually-hidden');
+                var climateString = $('input[name="listaRadio"]:checked').attr('id');
+                console.log(climateString);
+                $.ajax({
+                    url: '/Home/GetItemsFromDices', 
+                    method: 'POST', 
+                    data: { dices: dadosString, climate: climateString },
+                    success: function (response) {
+                        console.log(response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+
+        })
+
+        $('#textDices').on('keyup', function (e) {
+            this.value = this.value.replace(/[^0-9\s]/g, '');
+        });
+
+
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
