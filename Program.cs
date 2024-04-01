@@ -12,7 +12,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IHomeRepository, HomeRepository>();
 builder.Services.AddTransient<IHomeService, HomeService>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-       options.UseSqlServer("Server=tcp:harvesterrpgdbserver.database.windows.net,1433;Initial Catalog=harvesterRPG_db;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication=\"Active Directory Default\";")); 
+       options.UseSqlServer("Server=tcp:harvesterrpgdbserver.database.windows.net,1433;Initial Catalog=harvesterRPG_db;Persist Security Info=False;User ID=gustavobkrm;Password=Unica@123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;")); 
 
 
 var app = builder.Build();
