@@ -1,3 +1,3 @@
-#This is a Life Hack for the TableTop RPG that I'm playing :)
+# This is a Life Hack for the TableTop RPG that I'm playing :)
 There is a job system where we had to roll 5 d20, get each result and search for the correspondent item on a JPEG file.
 Now all we have to do is choose the biome and type the dices!
