@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@model List<JobItem>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -69,7 +70,16 @@
                 </div>
 
                 <div class="card-body col-4">
-
+                    <table class="table visually-hidden" id="tableResult">
+                        <thead>
+                            <tr>
+                                <th scope="col">Item Name</th>
+                                <th scope="col">Dice</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                        </tbody>
+                    </table>
                 </div>
 
             </div>
@@ -102,7 +112,17 @@
                     method: 'POST', 
                     data: { dices: dadosString, climate: climateString },
                     success: function (response) {
+                        $('#tableResult').removeClass('visually-hidden');
+                        var tbody = $('#tableBody');
+                        tbody.empty();
                         console.log(response);
+                        for (var i = 0; i < response.length; i++) {
+                            var item = response[i];
+                            var newRow = $('<tr>');
+                            newRow.append('<td>' + item.itemName + '</td>'); // Ajuste para item.itemName
+                            newRow.append('<td>' + item.itemDices + '</td>'); // Ajuste para item.itemDices
+                            tbody.append(newRow);
+                        }
                     },
                     error: function (xhr, status, error) {
                         console.error(xhr.responseText);
