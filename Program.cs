@@ -12,7 +12,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IHomeRepository, HomeRepository>();
 builder.Services.AddTransient<IHomeService, HomeService>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-       options.UseSqlServer("Server=GUSTAVO\\SQLEXPRESS;Database=rpgOnePiece;Trusted_Connection=True;TrustServerCertificate=True")); 
+       options.UseSqlServer("Server=tcp:harvesterrpgdbserver.database.windows.net,1433;Initial Catalog=harvesterRPG_db;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication=\"Active Directory Default\";")); 
 
 
 var app = builder.Build();
